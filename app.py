@@ -4,6 +4,7 @@ import numpy as np
 import io
 import cv2
 
+# Generate Line Drawing given an image.
 def create_line_drawing_image(img):
     kernel = np.array([
         [1, 1, 1, 1, 1],
@@ -18,22 +19,29 @@ def create_line_drawing_image(img):
     contour = 255 - img_diff
     return contour
 
+# Set Header
 st.header('Artzy', divider='rainbow')
 
+# Show File Uploader
 uploaded_file = st.file_uploader("Upload your awesome art!")
 
+# Create 3 Column Layout
 col1, col2, col3 = st.columns(3)
+
 if uploaded_file is not None:
-    # To read file as bytes:
+    # Once upload is done, fetch uploaded image.
     bytes_data = uploaded_file.getvalue()
-    # Show the image filename and image.
+    
     with col1:
+        # Display source image in column 1
         st.header("Source Image")
         st.image(bytes_data, width=200)
         
     with col2:
+        # Display Generate SKetch Button
         st.header("Generate Sketch")
         if st.button('Generate Sketch'):
+            # Upon Button Clock, Generate Sketch Image
             input_image = np.array(Image.open(io.BytesIO(bytes_data))) 
             line_drawing = create_line_drawing_image(input_image)
             with col3:
